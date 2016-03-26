@@ -1,0 +1,104 @@
+<advancedsettings>
+{% if kodi_mysql_enabled is defined and kodi_mysql_enabled and kodi_mysqldb_host == ansible_default_ipv4.address %}
+  <videodatabase>
+    <type>mysql</type>
+    <host>localhost</host>
+    <port>3306</port>
+    <user>{{ kodi_mysqldb_user }}</user>
+    <pass>{{ kodi_mysqldb_password }}</pass>
+  </videodatabase> 
+  <musicdatabase>
+    <type>mysql</type>
+    <host>localhost</host>
+    <port>3306</port>
+    <user>{{ kodi_mysqldb_user }}</user>
+    <pass>{{ kodi_mysqldb_password }}</pass>
+  </musicdatabase>
+  <videolibrary>
+    <importwatchedstate>true</importwatchedstate>
+    <importresumepoint>true</importresumepoint>
+  </videolibrary>
+{% elif kodi_mysqldb_host is defined and kodi_mysqldb_host != ansible_default_ipv4.address %}
+  <videodatabase>
+    <type>mysql</type>
+    <host>{{ kodi_mysqldb_host }}</host>
+    <port>3306</port>
+    <user>{{ kodi_mysqldb_user }}</user>
+    <pass>{{ kodi_mysqldb_password }}</pass>
+  </videodatabase> 
+  <musicdatabase>
+    <type>mysql</type>
+    <host>{{ kodi_mysqldb_host }}</host>
+    <port>3306</port>
+    <user>{{ kodi_mysqldb_user }}</user>
+    <pass>{{ kodi_mysqldb_password }}</pass>
+  </musicdatabase>
+  <videolibrary>
+    <importwatchedstate>true</importwatchedstate>
+    <importresumepoint>true</importresumepoint>
+  </videolibrary>
+{% endif %}
+<services>
+  <devicename>Kodi Server</devicename>
+  <esallinterfaces>true</esallinterfaces>
+  <escontinuousdelay>25</escontinuousdelay>
+  <esenabled>true</esenabled>
+  <esinitialdelay>750</esinitialdelay>
+  <esmaxclients>20</esmaxclients>
+  <esport>9777</esport>
+  <esportrange>10</esportrange>
+  <upnpannounce>true</upnpannounce>
+  <upnprenderer>false</upnprenderer>
+  <upnpserver>true</upnpserver>
+  <webserver>true</webserver>
+  <webserverusername>{{ kodi_web_server_username }}</webserverusername>
+  <webserverpassword>{{ kodi_web_server_password }}</webserverpassword>
+  <webserverport>8080</webserverport>
+  <webskin>webinterface.default</webskin>
+  <zeroconf>true</zeroconf>
+</services>
+<videolibrary>
+  <importresumepoint>true</importresumepoint>
+  <importwatchedstate>true</importwatchedstate>
+  <backgroundupdate>true</backgroundupdate>
+  <dateadded>1</dateadded>
+</videolibrary>
+<musiclibrary>
+  <backgroundupdate>true</backgroundupdate>
+</musiclibrary>
+<videoscanner>
+  <ignoreerrors>true</ignoreerrors>
+</videoscanner>
+<splash>false</splash>
+<bginfoloadermaxthreads>2</bginfoloadermaxthreads>
+<myvideos>
+  <extractflags>false</extractflags>
+  <extractthumb>false</extractthumb>
+</myvideos>
+<lookandfeel>
+  <enablerssfeeds>false</enablerssfeeds>
+</lookandfeel>
+<audiooutput>
+  <guisoundmode>0</guisoundmode>
+  <ac3passthrough>false</ac3passthrough>
+  <dtspassthrough>false</dtspassthrough>
+  <multichannellpcm>false</multichannellpcm>
+  <truehdpassthrough>false</truehdpassthrough>
+  <dtshdpassthrough>false</dtshdpassthrough>
+  <mode>2</mode>
+</audiooutput>
+<videoscreen>
+  <vsync>2</vsync>
+</videoscreen>
+<input>
+  <enablemouse>false</enablemouse>
+  <remoteaskeyboard>false</remoteaskeyboard>
+</input>
+<general>
+  <addonnotifications>false</addonnotifications>
+</general>
+<skinsettings>
+  <setting type="bool" name="skin.confluence.FirstTimeRun">false</setting>
+</skinsettings>
+</advancedsettings>
+

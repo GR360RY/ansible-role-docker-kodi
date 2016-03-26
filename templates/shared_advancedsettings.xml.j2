@@ -1,0 +1,72 @@
+<advancedsettings>
+{% if kodi_mysql_enabled is defined and kodi_mysql_enabled and htpc_resolving == 'zeroconf' %}
+  <videodatabase>
+    <type>mysql</type>
+    <host>{{ ansible_hostname }}.local</host>
+    <port>3306</port>
+    <user>{{ kodi_mysqldb_user }}</user>
+    <pass>{{ kodi_mysqldb_password }}</pass>
+  </videodatabase> 
+  <musicdatabase>
+    <type>mysql</type>
+    <host>{{ ansible_hostname }}.local</host>
+    <port>3306</port>
+    <user>{{ kodi_mysqldb_user }}</user>
+    <pass>{{ kodi_mysqldb_password }}</pass>
+  </musicdatabase>
+  <videolibrary>
+    <importwatchedstate>true</importwatchedstate>
+    <importresumepoint>true</importresumepoint>
+  </videolibrary>
+{% elif kodi_mysqldb_host is defined and kodi_mysql_enabled and htpc_resolving == 'hostname' %}
+  <videodatabase>
+    <type>mysql</type>
+    <host>{{ ansible_hostname }}</host>
+    <port>3306</port>
+    <user>{{ kodi_mysqldb_user }}</user>
+    <pass>{{ kodi_mysqldb_password }}</pass>
+  </videodatabase> 
+  <musicdatabase>
+    <type>mysql</type>
+    <host>{{ ansible_hostname }}</host>
+    <port>3306</port>
+    <user>{{ kodi_mysqldb_user }}</user>
+    <pass>{{ kodi_mysqldb_password }}</pass>
+  </musicdatabase>
+  <videolibrary>
+    <importwatchedstate>true</importwatchedstate>
+    <importresumepoint>true</importresumepoint>
+  </videolibrary>
+{% elif kodi_mysqldb_host is defined and kodi_mysql_enabled and htpc_resolving == 'staticip' %}
+  <videodatabase>
+    <type>mysql</type>
+    <host>{{ ansible_default_ipv4.address }}</host>
+    <port>3306</port>
+    <user>{{ kodi_mysqldb_user }}</user>
+    <pass>{{ kodi_mysqldb_password }}</pass>
+  </videodatabase> 
+  <musicdatabase>
+    <type>mysql</type>
+    <host>{{ ansible_default_ipv4.address }}</host>
+    <port>3306</port>
+    <user>{{ kodi_mysqldb_user }}</user>
+    <pass>{{ kodi_mysqldb_password }}</pass>
+  </musicdatabase>
+  <videolibrary>
+    <importwatchedstate>true</importwatchedstate>
+    <importresumepoint>true</importresumepoint>
+  </videolibrary>
+{% endif %}
+  <pathsubstitution>
+    <substitute>
+      <from>{{ htpc_media_path }}/</from>
+{% if htpc_resolving == 'zeroconf' %}
+      <to>nfs://{{ ansible_hostname }}.local{{ htpc_media_path }}/</to>
+{% elif htpc_resolving == 'hostname' %}
+      <to>nfs://{{ ansible_hostname }}{{ htpc_media_path }}/</to>
+{% elif htpc_resolving == 'staticip' %}
+      <to>nfs://{{ ansible_default_ipv4.address }}{{ htpc_media_path }}/</to>
+{% endif %}
+    </substitute>
+  </pathsubstitution>
+</advancedsettings>

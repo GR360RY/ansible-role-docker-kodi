@@ -1,0 +1,59 @@
+---
+# tasks file for docker-kodi
+
+# - name: Create Kodi server config directory
+#   file: path={{ kodi_config_path }} state=directory owner={{ htpc_user_username }} group={{ htpc_user_group }}
+
+- name: Download and Start Kodi Headless container
+  docker:
+    name: kodi
+    image: linuxserver/kodi-headless
+    state: reloaded
+    restart_policy: always
+    pull: always
+    volumes:
+      - "{{ kodi_config_path }}:/config/.kodi"
+      - "{{ htpc_media_path }}:{{ htpc_media_path }}"
+      - "/var/run/mysqld:/var/run/mysqld"
+    net: host
+    ports:
+      - "8080:8080"
+      - "9777:9777/udp"
+    env:
+        PUID: "{{ htpc_user_uid }}"
+        PGID: "{{ htpc_user_gid }}"
+        # VERSION:
+        # TZ:
+
+- name: Wait for container to mount volumes
+  wait_for: path="{{ kodi_config_path}}/userdata"
+
+- name: Update sources.xml
+  template: 
+    src: sources.xml.j2
+    dest:  "{{ kodi_config_path }}/userdata/sources.xml"
+    owner: "{{ htpc_user_username }}"
+    group: "{{ htpc_user_group }}"
+    mode: 0644
+  notify: restart kodi container
+
+- name: Update local advancedsettings.xml
+  template: 
+    src: local_advancedsettings.xml.j2
+    dest:  "{{ kodi_config_path }}/userdata/advancedsettings.xml"
+    owner: "{{ htpc_user_username }}"
+    group: "{{ htpc_user_group }}"
+    mode: 0644
+  notify: restart kodi container
+
+- name: Create Shared Kodi config directory
+  file: path={{ htpc_media_path }}/.kodi_client_setup state=directory owner={{ htpc_user_username }} group={{ htpc_user_group }} mode=0755
+
+- name: Update shared advancedsettings.xml
+  template: 
+    src: shared_advancedsettings.xml.j2
+    dest:  "{{ htpc_media_path }}/.kodi_client_setup/advancedsettings.xml"
+    owner: "{{ htpc_user_username }}"
+    group: "{{ htpc_user_group }}"
+    mode: 0644
+  notify: restart kodi container

@@ -1,0 +1,18 @@
+---
+# defaults file for docker-kodi
+
+kodi_config_path: /opt/kodi-server
+
+kodi_web_server_username: kodi
+kodi_web_server_password:
+
+# Helper variable. In use by other roles
+kodi_client_enabled: yes
+
+# Helper variable. In use by other roles
+kodi_host: "{{ ansible_default_ipv4.address }}"
+
+# Helper variable. When installed together with `kodi-mysql` role
+# assume that mysql database runs on the same host as `kodi-client`
+# See examples.
+kodi_mysqldb_host: "{{ ansible_default_ipv4.address }}"

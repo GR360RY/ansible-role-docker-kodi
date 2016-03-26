@@ -1,0 +1,23 @@
+---
+# handlers file for docker-kodi
+
+- name: restart kodi container
+  docker:
+    name: kodi
+    image: linuxserver/kodi-headless
+    state: restarted
+    restart_policy: always
+    pull: always
+    volumes:
+      - "{{ kodi_config_path }}:/config/.kodi"
+      - "{{ htpc_media_path }}:{{ htpc_media_path }}"
+      - "/var/run/mysqld:/var/run/mysqld"
+    net: host
+    ports:
+      - "8080:8080"
+      - "9777:9777/udp"
+    env:
+        PUID: "{{ htpc_user_uid }}"
+        PGID: "{{ htpc_user_gid }}"
+        # VERSION:
+        # TZ:
